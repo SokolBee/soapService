@@ -38,6 +38,7 @@ public class User implements Serializable {
     protected Set<Role> roleSet;
 
     public User() {
+        this.roleSet = new HashSet<>();
     }
 
     public User(String login, String name, String password, Role... roles) {

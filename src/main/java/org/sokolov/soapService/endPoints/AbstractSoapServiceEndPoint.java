@@ -4,7 +4,6 @@ import org.sokolov.soapService.generated.*;
 import org.sokolov.soapService.models.User;
 import org.sokolov.soapService.services.UserService;
 import org.sokolov.soapService.utils.UserValidator;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.converter.Converter;
 
 
@@ -14,7 +13,7 @@ import javax.xml.bind.JAXBElement;
 public abstract class AbstractSoapServiceEndPoint implements
         SWService<JAXBElement<UserWrapper>,UserWrapper, JAXBElement<LoginWrapper>,LoginWrapper,
                 JAXBElement<OperationSuccess>,OperationSuccess>{
-    protected static final String NAMESPACE_URI = "http://soap/users";
+    protected static final String NAMESPACE_URI = "http://generated";
 
     protected final Converter<User,
             SoapUser> soapUserConverter;
