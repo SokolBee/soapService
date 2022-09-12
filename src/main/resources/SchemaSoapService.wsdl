@@ -1,0 +1,251 @@
+<wsdl:definitions
+        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+        xmlns:tns="http://generated"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+        targetNamespace="http://generated">
+    <wsdl:documentation>
+        Service: UserService
+        Version: 1.0
+        Owner: Ivan Sokolov
+    </wsdl:documentation>
+    <wsdl:types>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                   targetNamespace="http://generated"
+                   xmlns:tns="http://generated"
+                   elementFormDefault="qualified">
+
+            <xs:simpleType name="userLogin">
+                <xs:restriction base="xs:string"/>
+            </xs:simpleType>
+
+            <xs:simpleType name="userName">
+                <xs:restriction base="xs:string"/>
+            </xs:simpleType>
+
+            <xs:simpleType name="userPassword">
+                <xs:restriction base="xs:string">
+                    <xs:pattern value="(?=.*\d)(?=.*[A-Z])"/>
+                </xs:restriction>
+            </xs:simpleType>
+
+            <xs:complexType name="soapRole">
+                <xs:sequence>
+                    <xs:element name="id" type="xs:long"/>
+                    <xs:element name="name" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="soapUser">
+                <xs:sequence>
+                    <xs:element name="login" type="tns:userLogin"/>
+                    <xs:element name="name" type="tns:userName"/>
+                    <xs:element name="password" type="tns:userPassword"/>
+                    <xs:element name="roles" type="tns:soapRole"
+                                minOccurs="0" maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:complexType>
+
+
+            <xs:complexType name="operationSuccess">
+                <xs:sequence>
+                    <xs:element name="success" type="xs:boolean"/>
+                    <xs:element name="errors" type="xs:string"
+                                minOccurs="0" maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="userWrapper">
+                <xs:sequence>
+                    <xs:element name="user" type="tns:soapUser"
+                                minOccurs="0" maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="loginWrapper">
+                <xs:sequence>
+                    <xs:element name="login" type="tns:userLogin"
+                                minOccurs="0" maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:element name="getAllUsersRequest" type="tns:loginWrapper"/>
+            <xs:element name="getAllUsersResponse" type="tns:userWrapper"/>
+
+            <xs:element name="getUserByLoginWithRolesRequest" type="tns:loginWrapper"/>
+            <xs:element name="getUserByLoginWithRolesResponse" type="tns:userWrapper"/>
+
+            <xs:element name="deleteUserRequest" type="tns:loginWrapper"/>
+            <xs:element name="deleteUserResponse" type="tns:operationSuccess"/>
+
+            <xs:element name="addNewUserRequest" type="tns:userWrapper"/>
+            <xs:element name="addNewUserResponse" type="tns:operationSuccess"/>
+
+            <xs:element name="updateUserRequest" type="tns:userWrapper"/>
+            <xs:element name="updateUserResponse" type="tns:operationSuccess"/>
+
+        </xs:schema>
+    </wsdl:types>
+
+    <!--1-->
+    <wsdl:message name="getAllUsersRequest">
+        <wsdl:part name="getAllUsersRequest" element="tns:getAllUsersRequest"/>
+    </wsdl:message>
+    <wsdl:message name="getAllUsersResponse">
+        <wsdl:part name="getAllUsersResponse" element="tns:getAllUsersResponse"/>
+    </wsdl:message>
+
+    <wsdl:portType name="getAllUsersService">
+        <wsdl:operation name="getAllUsers">
+            <wsdl:input message="tns:getAllUsersRequest"/>
+            <wsdl:output message="tns:getAllUsersRequest"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <!--2-->
+    <wsdl:message name="getUserByLoginWithRolesRequest">
+        <wsdl:part name="getUserByLoginWithRolesRequest" element="tns:getUserByLoginWithRolesRequest"/>
+    </wsdl:message>
+    <wsdl:message name="getUserByLoginWithRolesResponse">
+        <wsdl:part name="getUserByLoginWithRolesResponse" element="tns:getUserByLoginWithRolesResponse"/>
+    </wsdl:message>
+
+    <wsdl:portType name="getUserByLoginWithRolesService">
+        <wsdl:operation name="getUserByLoginWithRoles">
+            <wsdl:input message="tns:getUserByLoginWithRolesRequest"/>
+            <wsdl:output message="tns:getUserByLoginWithRolesResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <!--3-->
+    <wsdl:message name="deleteUserRequest">
+        <wsdl:part name="deleteUserRequest" element="tns:deleteUserRequest"/>
+    </wsdl:message>
+    <wsdl:message name="deleteUserResponse">
+        <wsdl:part name="deleteUserResponse" element="tns:deleteUserResponse"/>
+    </wsdl:message>
+
+    <wsdl:portType name="deleteUserService">
+        <wsdl:operation name="deleteUser">
+            <wsdl:input message="tns:deleteUserRequest"/>
+            <wsdl:output message="tns:deleteUserResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <!--4-->
+    <wsdl:message name="addNewUserRequest">
+        <wsdl:part name="addNewUserRequest" element="tns:addNewUserRequest"/>
+    </wsdl:message>
+    <wsdl:message name="addNewUserResponse">
+        <wsdl:part name="addNewUserResponse" element="tns:addNewUserResponse"/>
+    </wsdl:message>
+
+    <wsdl:portType name="addNewUserService">
+        <wsdl:operation name="addNewUser">
+            <wsdl:input message="tns:addNewUserRequest"/>
+            <wsdl:output message="tns:addNewUserResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <!--5-->
+    <wsdl:message name="updateUserRequest">
+        <wsdl:part name="updateUserRequest" element="tns:updateUserRequest"/>
+    </wsdl:message>
+    <wsdl:message name="updateUserResponse">
+        <wsdl:part name="updateUserResponse" element="tns:updateUserResponse"/>
+    </wsdl:message>
+
+    <wsdl:portType name="updateUserService">
+        <wsdl:operation name="updateUser">
+            <wsdl:input message="tns:updateUserRequest"/>
+            <wsdl:output message="tns:updateUserResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:binding name="getAllUsersBinding" type="tns:getAllUsersService">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <!--1-->
+        <wsdl:operation name="getAllUsers">
+            <soap:operation soapAction="http://soap/users/getAllUsers"/>
+            <wsdl:input>
+                <soap:body parts="getAllUsersRequest" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="getAllUsersResponse" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <!--2-->
+    <wsdl:binding name="getUserByLoginWithRolesBinding" type="tns:getUserByLoginWithRolesService">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+
+        <wsdl:operation name="getUserByLoginWithRoles">
+            <soap:operation soapAction="http://soap/users/getUserByLoginWithRoles"/>
+            <wsdl:input>
+                <soap:body parts="getUserByLoginWithRolesRequest" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="getUserByLoginWithRolesResponse" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <!--3-->
+    <wsdl:binding name="deleteUserBinding" type="tns:deleteUserService">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <wsdl:operation name="deleteUser">
+            <soap:operation soapAction="http://soap/users/deleteUser"/>
+            <wsdl:input>
+                <soap:body parts="deleteUserRequest" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="deleteUSerResponse" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <!--4-->
+    <wsdl:binding name="addNewUserBinding" type="tns:addNewUserService">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <wsdl:operation name="addNewUser">
+            <soap:operation soapAction="http://soap/users/addNewUser"/>
+            <wsdl:input>
+                <soap:body parts="addNewUserRequest" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="addNewUserResponse" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <!--5-->
+    <wsdl:binding name="updateUserBinding" type="tns:updateUserService">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <wsdl:operation name="updateUser">
+            <soap:operation soapAction="http://soap/users/updateUser"/>
+            <wsdl:input>
+                <soap:body parts="updateUserRequest" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="updateUserResponse" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <wsdl:service name="userService">
+        <wsdl:port name="getAllUsersPort" binding="tns:getAllUsersBinding">
+            <soap:address location="http://localhost:8080/soap/ws/users"/>
+        </wsdl:port>
+        <wsdl:port name="getUserByLoginWithRolesPort" binding="tns:getUserByLoginWithRolesBinding">
+            <soap:address location="http://localhost:8080/soap/ws/users"/>
+        </wsdl:port>
+        <wsdl:port name="deleteUserPort" binding="tns:deleteUserBinding">
+            <soap:address location="http://localhost:8080/soap/ws/users"/>
+        </wsdl:port>
+        <wsdl:port name="addNewUserPort" binding="tns:addNewUserBinding">
+            <soap:address location="http://localhost:8080/soap/ws/users"/>
+        </wsdl:port>
+        <wsdl:port name="updateUserPort" binding="tns:updateUserBinding">
+            <soap:address location="http://localhost:8080/soap/ws/users"/>
+        </wsdl:port>
+    </wsdl:service>
+
+</wsdl:definitions>
