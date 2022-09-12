@@ -15,10 +15,10 @@ public abstract class AbstractSoapServiceEndPoint implements
         SWService<JAXBElement<UserWrapper>,UserWrapper, JAXBElement<LoginWrapper>,LoginWrapper,
                 JAXBElement<OperationSuccess>,OperationSuccess>{
     protected static final String NAMESPACE_URI = "http://soap/users";
-    @Qualifier("soapUserConverter")
+
     protected final Converter<User,
             SoapUser> soapUserConverter;
-    @Qualifier("userConverter")
+
     protected final Converter<SoapUser,
             User> userConverter;
     protected final UserService userService;
