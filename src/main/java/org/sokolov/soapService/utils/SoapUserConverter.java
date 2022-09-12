@@ -31,12 +31,11 @@ public class SoapUserConverter implements Converter<User, SoapUser> {
 
     @Override
     public SoapUser convert(@Nullable User source) {
-        if (source == null) throw new IllegalArgumentException("User should be not null");
+        if (source == null) throw new IllegalArgumentException("There is not user with this login");
         SoapUser soapUser = new SoapUser();
         soapUser.setLogin(source.getLogin());
         soapUser.setName(source.getName());
         soapUser.setPassword(source.getPassword());
-
         if (util.isLoaded(source, "roleSet"))
             soapUser.getRoles().addAll(soapRoleConverter.convert(source.getRoleSet()));
 
