@@ -1,5 +1,7 @@
 package org.sokolov.soapService.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sokolov.soapService.models.Role;
 import org.sokolov.soapService.models.User;
 import org.sokolov.soapService.services.RoleService;
@@ -14,6 +16,8 @@ import java.util.stream.Stream;
 
 @Component("dataPropagation")
 public class Data {
+
+    protected final Logger log = LoggerFactory.getLogger(Data.class);
 
 
     protected final UserValidator validator;
@@ -35,16 +39,19 @@ public class Data {
     public void propagate() {
         List<Role> roles = roleService.save(createRoles(10));
 
-        roles.forEach(System.out::println);
+        roles.forEach(role -> log.info(role.toString()));
 
         List<User> users = createUsers(20);
-        bound(users,roles);
+        bound(users, roles);
 
-        users.forEach(System.out::println);
+        users.forEach(user -> log.info(user.toString()));
 
         users.stream()
                 .map(validator::validateUser)
-                        .forEach(constraintViolations -> constraintViolations.forEach(System.out::println));
+                .forEach(constraintViolations ->
+                        constraintViolations.forEach(violation ->
+                                log.info(violation.getMessage())
+                        ));
 
 
         userService.save(users);
@@ -52,10 +59,10 @@ public class Data {
 
     protected void bound(final List<User> users, final List<Role> roles) {
         users.forEach(user -> {
-                    int size = randomGenerator.nextInt(1,4);
-                    randomGenerator.ints(size,0,10)
+                    int size = randomGenerator.nextInt(1, 4);
+                    randomGenerator.ints(size, 0, 10)
                             .boxed()
-                            .forEach(index-> user.getRoleSet().add(roles.get(index)));
+                            .forEach(index -> user.getRoleSet().add(roles.get(index)));
 
                 }
         );
@@ -75,7 +82,7 @@ public class Data {
                 .toList();
     }
 
-    protected  String generateString(final int length, final int origin, final int bound) {
+    protected String generateString(final int length, final int origin, final int bound) {
         return randomGenerator.ints(origin, bound)
                 .filter(value -> value > 96 | (value < 91 & value > 64) | value < 58)
                 .limit(length)
