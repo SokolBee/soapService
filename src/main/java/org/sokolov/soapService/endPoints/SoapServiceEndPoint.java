@@ -104,7 +104,7 @@ public class SoapServiceEndPoint extends AbstractSoapServiceEndPoint {
             User user = userConverter.convert(soapUser);
             Set<ConstraintViolation<User>> violations = userValidator.validateUser(user);
             if (violations.isEmpty()) {
-                User result = userService.save(user);
+                User result = userService.update(user);
                 if (result != null) {
                     response.setSuccess(true);
                     return factory.createUpdateUserResponse(response);
