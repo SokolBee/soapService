@@ -6,6 +6,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
+import java.util.random.RandomGenerator;
+import java.util.random.RandomGeneratorFactory;
+
 @Configuration
 @ComponentScan(basePackages = {"org.sokolov.soapService"})
 public class AppConfig {
@@ -16,5 +19,12 @@ public class AppConfig {
     @Bean
     ObjectFactory objectFactory(){
         return new ObjectFactory();
+    }
+
+    @Bean
+    RandomGenerator randomGenerator(){
+        RandomGeneratorFactory<RandomGenerator> factory =
+                RandomGeneratorFactory.of("Random");
+        return factory.create();
     }
 }

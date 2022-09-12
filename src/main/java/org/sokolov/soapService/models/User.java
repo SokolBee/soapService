@@ -1,6 +1,7 @@
 package org.sokolov.soapService.models;
 
 
+import com.sun.xml.bind.v2.TODO;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -23,17 +24,18 @@ public class User implements Serializable {
     protected String name;
 
     @NotNull(message = "Password should not be null")
-    @Pattern(regexp ="(?=.*\\d)(?=.*[A-Z])",message = "Password should have at least one capital letter and one figure")
-    @Column(name = "USER_PASSWORD" , columnDefinition =
+    //TODO
+//    @Pattern(regexp = "[A-Z]+[\\d]+", message = "Password should have at least one capital letter and one figure")
+    @Column(name = "USER_PASSWORD", columnDefinition =
             "varchar(30) not null " +
                     " check (USER_PASSWORD ~ '(?=.*\\d)(?=.*[A-Z])')"
     )
     protected String password;
 
-    @ManyToMany(targetEntity = Role.class, fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
+    @ManyToMany(targetEntity = Role.class, fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     protected Set<Role> roleSet;
 
-    public User(){
+    public User() {
     }
 
     public User(String login, String name, String password, Role... roles) {
@@ -50,6 +52,7 @@ public class User implements Serializable {
     public void setLogin(String login) {
         this.login = login;
     }
+
     public String getName() {
         return name;
     }
@@ -57,6 +60,7 @@ public class User implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
     public String getPassword() {
         return password;
     }
@@ -68,7 +72,6 @@ public class User implements Serializable {
     public void setRoleSet(Set<Role> roleSet) {
         this.roleSet = roleSet;
     }
-
 
 
     public Set<Role> getRoleSet() {

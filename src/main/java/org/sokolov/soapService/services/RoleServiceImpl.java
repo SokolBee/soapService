@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.*;
+
 @Service("jpaRoleService")
 @Transactional
 public class RoleServiceImpl implements RoleService{
@@ -16,6 +18,8 @@ public class RoleServiceImpl implements RoleService{
     public RoleServiceImpl(RoleRepository repository){
         this.repository = repository;
     }
+
+
 
     @Override
     public void delete(Role role) {
@@ -31,4 +35,12 @@ public class RoleServiceImpl implements RoleService{
     public Role save(Role role) {
         return repository.save(role);
     }
+
+    @Override
+    public List<Role> save(Collection<Role> roles) {
+        List<Role> result = new ArrayList<>();
+        repository.saveAll(roles).forEach(result::add);
+        return result;
+    }
+
 }
