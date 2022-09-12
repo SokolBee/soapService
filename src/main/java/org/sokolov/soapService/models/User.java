@@ -1,6 +1,6 @@
 package org.sokolov.soapService.models;
 
-
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -12,6 +12,10 @@ import java.util.*;
 @Entity
 @Table(name = "USERS")
 public class User implements Serializable {
+
+    @Transient
+    protected static final String pattern = "(.*[A-Z]+.*[a-z]*.*[\\d]+.*)|(.*[a-z]*.*[\\d]+.*[A-Z]+.*)|(.*[\\d]+.*[A-Z]+.*[a-z]*.*)|(.*[A-Z]+.*[\\d]+.*[a-z]*.*)|(.*[a-z]*.*[A-Z]+.*[\\d]+.*)|(.*[\\d]+.*[a-z]*.*[A-Z]+.*)";
+
     @Id
     @Column(name = "USER_LOGIN")
     @NotNull(message = "Login should not be null")
@@ -23,17 +27,17 @@ public class User implements Serializable {
     protected String name;
 
     @NotNull(message = "Password should not be null")
-    @Pattern(regexp ="(?=.*\\d)(?=.*[A-Z])",message = "Password should have at least one capital letter and one figure")
-    @Column(name = "USER_PASSWORD" , columnDefinition =
+    @Pattern(regexp = pattern, message = "Password should have at least one capital letter and one figure")
+    @Column(name = "USER_PASSWORD", columnDefinition =
             "varchar(30) not null " +
                     " check (USER_PASSWORD ~ '(?=.*\\d)(?=.*[A-Z])')"
     )
     protected String password;
 
-    @ManyToMany(targetEntity = Role.class, fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
+    @ManyToMany(targetEntity = Role.class, fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     protected Set<Role> roleSet;
 
-    public User(){
+    public User() {
     }
 
     public User(String login, String name, String password, Role... roles) {
@@ -50,6 +54,7 @@ public class User implements Serializable {
     public void setLogin(String login) {
         this.login = login;
     }
+
     public String getName() {
         return name;
     }
@@ -57,6 +62,7 @@ public class User implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
     public String getPassword() {
         return password;
     }
@@ -68,7 +74,6 @@ public class User implements Serializable {
     public void setRoleSet(Set<Role> roleSet) {
         this.roleSet = roleSet;
     }
-
 
 
     public Set<Role> getRoleSet() {

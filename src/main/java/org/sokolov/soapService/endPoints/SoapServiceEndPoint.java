@@ -5,6 +5,7 @@ import org.sokolov.soapService.models.User;
 import org.sokolov.soapService.services.UserService;
 import org.sokolov.soapService.utils.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
@@ -19,7 +20,8 @@ import java.util.Set;
 public class SoapServiceEndPoint extends AbstractSoapServiceEndPoint {
 
     @Autowired
-    public SoapServiceEndPoint(Converter<User, SoapUser> soapUserConverter, Converter<SoapUser, User> userConverter,
+    public SoapServiceEndPoint(@Qualifier("soapUserConverter") Converter<User, SoapUser> soapUserConverter,
+                               @Qualifier("userConverter") Converter<SoapUser, User> userConverter,
                                UserService userService, UserValidator userValidator, ObjectFactory objectFactory) {
         super(soapUserConverter, userConverter, userService, userValidator, objectFactory);
     }

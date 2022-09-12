@@ -2,6 +2,8 @@ package org.sokolov.soapService.services;
 
 import org.sokolov.soapService.models.User;
 
+import java.util.Collection;
+
 import java.util.List;
 
 public interface UserService {
@@ -13,6 +15,8 @@ public interface UserService {
 
     boolean deleteByLogin(String login);
     User save(User user);
+
+    List<User> save(Collection<User> users);
 
     User update(User user);
 
