@@ -1,5 +1,6 @@
 package org.sokolov.soapService.endPoints;
 
+import org.sokolov.soapService.aspects.Loggable;
 import org.sokolov.soapService.generated.*;
 import org.sokolov.soapService.models.User;
 import org.sokolov.soapService.services.UserService;
@@ -25,7 +26,7 @@ public class SoapServiceEndPoint extends AbstractSoapServiceEndPoint {
                                UserService userService, UserValidator userValidator, ObjectFactory objectFactory) {
         super(soapUserConverter, userConverter, userService, userValidator, objectFactory);
     }
-
+    @Loggable
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getAllUsersRequest")
     @ResponsePayload
     @Override
@@ -35,7 +36,7 @@ public class SoapServiceEndPoint extends AbstractSoapServiceEndPoint {
                 response.getUser().add(soapUserConverter.convert(user)));
         return factory.createGetAllUsersResponse(response);
     }
-
+    @Loggable
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getUserByLoginWithRolesRequest")
     @ResponsePayload
     @Override
@@ -51,7 +52,7 @@ public class SoapServiceEndPoint extends AbstractSoapServiceEndPoint {
         }
         return factory.createGetUserByLoginWithRolesResponse(response);
     }
-
+    @Loggable
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "deleteUserRequest")
     @ResponsePayload
     @Override
@@ -70,7 +71,7 @@ public class SoapServiceEndPoint extends AbstractSoapServiceEndPoint {
         }
         return factory.createDeleteUserResponse(response);
     }
-
+    @Loggable
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "addNewUserRequest")
     @ResponsePayload
     @Override
@@ -92,7 +93,7 @@ public class SoapServiceEndPoint extends AbstractSoapServiceEndPoint {
         }
         return factory.createAddNewUserResponse(response);
     }
-
+    @Loggable
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "updateUserRequest")
     @ResponsePayload
     @Override
