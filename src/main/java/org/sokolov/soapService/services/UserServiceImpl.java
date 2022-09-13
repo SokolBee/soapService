@@ -1,5 +1,6 @@
 package org.sokolov.soapService.services;
 
+import org.sokolov.soapService.aspects.Loggable;
 import org.sokolov.soapService.models.User;
 import org.sokolov.soapService.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,26 +19,26 @@ public class UserServiceImpl implements UserService {
     public UserServiceImpl(UserRepository repository) {
         this.repository = repository;
     }
-
+    @Loggable
     @Transactional(readOnly = true)
     @Override
     public Iterable<User> findAll() {
         return repository.findAll();
     }
-
+    @Loggable
     @Transactional(readOnly = true)
     @Override
     public User findByLogin(String login) {
         return repository.findUserByLogin(login);
     }
-
+    @Loggable
     @Transactional(readOnly = true)
     @Override
     public User findByLoginWithRoles(String login) {
         return repository.findUserByLoginWithRoles(login);
     }
 
-
+    @Loggable
     @Override
     public boolean delete(User user) {
         if (existByLogin(user.getLogin())) {
@@ -47,7 +48,7 @@ public class UserServiceImpl implements UserService {
             return false;
         }
     }
-
+    @Loggable
     @Override
     public boolean deleteByLogin(String login) {
         if (existByLogin(login)) {
@@ -58,7 +59,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
+    @Loggable
     @Override
     public User save(User user) {
         if (!existByLogin(user.getLogin())){
@@ -66,14 +67,14 @@ public class UserServiceImpl implements UserService {
         }
         return null;
     }
-
+    @Loggable
     @Override
     public List<User> save(Collection<User> users) {
         List<User> result = new ArrayList<>();
         repository.saveAll(users).forEach(result::add);
         return result;
     }
-
+    @Loggable
     @Override
     public User update(User user) {
         if (existByLogin(user.getLogin())){
