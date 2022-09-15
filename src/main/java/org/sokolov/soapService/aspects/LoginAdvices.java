@@ -21,7 +21,7 @@ public class LoginAdvices {
                 + pjp.getSignature().getName() + " passed params " + Arrays.toString(pjp.getArgs()));
         Object result = pjp.proceed();
         log.info("After execution " + pjp.getSignature().getDeclaringType().getSimpleName() + " "
-                + pjp.getSignature().getName() + " return value " + result.toString());
+                + pjp.getSignature().getName() + " return value " + result);
         return result;
     }
 }

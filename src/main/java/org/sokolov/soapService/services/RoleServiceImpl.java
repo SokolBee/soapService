@@ -11,29 +11,39 @@ import java.util.*;
 
 @Service("jpaRoleService")
 @Transactional
-public class RoleServiceImpl implements RoleService{
+public class RoleServiceImpl implements RoleService {
 
     protected RoleRepository repository;
 
     @Autowired
-    public RoleServiceImpl(RoleRepository repository){
+    public RoleServiceImpl(RoleRepository repository) {
         this.repository = repository;
     }
+
     @Loggable
     @Override
     public void delete(Role role) {
         repository.delete(role);
     }
+
+    @Loggable
+    @Override
+    public void delete(Collection<Role> roles) {
+        repository.deleteAll(roles);
+    }
+
     @Loggable
     @Override
     public void deleteById(Long id) {
         repository.deleteById(id);
     }
+
     @Loggable
     @Override
     public Role save(Role role) {
         return repository.save(role);
     }
+
     @Loggable
     @Override
     public List<Role> save(Collection<Role> roles) {
