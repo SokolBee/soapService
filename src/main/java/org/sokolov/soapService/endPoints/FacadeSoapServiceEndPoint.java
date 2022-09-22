@@ -8,6 +8,7 @@ import org.sokolov.soapService.utils.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.stereotype.Service;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
@@ -17,18 +18,15 @@ import javax.validation.ConstraintViolation;
 import javax.xml.bind.JAXBElement;
 import java.util.Set;
 
-@Endpoint
-public class SoapServiceEndPoint extends AbstractSoapServiceEndPoint {
+@Service
+public class FacadeSoapServiceEndPoint extends AbstractSoapServiceEndPoint {
 
     @Autowired
-    public SoapServiceEndPoint(@Qualifier("soapUserConverter") Converter<User, SoapUser> soapUserConverter,
-                               @Qualifier("userConverter") Converter<SoapUser, User> userConverter,
-                               UserService userService, UserValidator userValidator, ObjectFactory objectFactory) {
+    public FacadeSoapServiceEndPoint(@Qualifier("soapUserConverter") Converter<User, SoapUser> soapUserConverter,
+                                     @Qualifier("userConverter") Converter<SoapUser, User> userConverter,
+                                     UserService userService, UserValidator userValidator, ObjectFactory objectFactory) {
         super(soapUserConverter, userConverter, userService, userValidator, objectFactory);
     }
-    @Loggable
-    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getAllUsersRequest")
-    @ResponsePayload
     @Override
     public JAXBElement<UserWrapper> getAllUsers() {
         UserWrapper response = userWrapperResp();
@@ -36,12 +34,10 @@ public class SoapServiceEndPoint extends AbstractSoapServiceEndPoint {
                 response.getUser().add(soapUserConverter.convert(user)));
         return factory.createGetAllUsersResponse(response);
     }
-    @Loggable
-    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getUserByLoginWithRolesRequest")
-    @ResponsePayload
+
     @Override
     public JAXBElement<UserWrapper> getUserByLoginWithRoles(
-            @RequestPayload JAXBElement<LoginWrapper> request) {
+            JAXBElement<LoginWrapper> request) {
         UserWrapper response = userWrapperResp();
         String login = request.getValue().getLogin().get(0);
         if (login != null) {
@@ -52,12 +48,10 @@ public class SoapServiceEndPoint extends AbstractSoapServiceEndPoint {
         }
         return factory.createGetUserByLoginWithRolesResponse(response);
     }
-    @Loggable
-    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "deleteUserRequest")
-    @ResponsePayload
+
     @Override
     public JAXBElement<OperationSuccess> deleteUserRequest(
-            @RequestPayload JAXBElement<LoginWrapper> request) {
+            JAXBElement<LoginWrapper> request) {
         OperationSuccess response = operationSuccessResp();
         String login = request.getValue().getLogin().get(0);
         if (login != null) {
@@ -71,12 +65,10 @@ public class SoapServiceEndPoint extends AbstractSoapServiceEndPoint {
         }
         return factory.createDeleteUserResponse(response);
     }
-    @Loggable
-    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "addNewUserRequest")
-    @ResponsePayload
+
     @Override
     public JAXBElement<OperationSuccess> addNewUser(
-            @RequestPayload JAXBElement<UserWrapper> request) {
+            JAXBElement<UserWrapper> request) {
         OperationSuccess response = operationSuccessResp();
         SoapUser soapUser = request.getValue().getUser().get(0);
         if (soapUser != null) {
@@ -93,12 +85,10 @@ public class SoapServiceEndPoint extends AbstractSoapServiceEndPoint {
         }
         return factory.createAddNewUserResponse(response);
     }
-    @Loggable
-    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "updateUserRequest")
-    @ResponsePayload
+
     @Override
     public JAXBElement<OperationSuccess> updateUser(
-            @RequestPayload JAXBElement<UserWrapper> request) {
+            JAXBElement<UserWrapper> request) {
         OperationSuccess response = operationSuccessResp();
         SoapUser soapUser = request.getValue().getUser().get(0);
         if (soapUser != null) {
